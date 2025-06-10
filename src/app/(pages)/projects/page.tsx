@@ -1,3 +1,7 @@
+import { ProjectList } from "@/components/projects/project-list";
+import { Button } from "@/components/ui/button";
+import { PlusIcon } from "@heroicons/react/24/outline";
+
 export default function ProjectsPage() {
   return (
     <div className="space-y-6">
@@ -10,7 +14,13 @@ export default function ProjectsPage() {
             Organize your tasks into projects
           </p>
         </div>
+        <Button>
+          <PlusIcon className="h-4 w-4 mr-2" />
+          New Project
+        </Button>
       </div>
+
+      <ProjectList />
     </div>
   );
 }
