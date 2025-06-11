@@ -7,15 +7,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useAppSelector } from "@/store/hooks";
+import { selectUser } from "@/store/selectors";
 import {
   CheckCircleIcon,
   ClockIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
-import { useAuth } from "@/components/auth/auth-provider";
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  const user = useAppSelector(selectUser);
 
   return (
     <div className="space-y-6">
