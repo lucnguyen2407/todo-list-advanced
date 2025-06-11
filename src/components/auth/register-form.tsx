@@ -9,6 +9,10 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "./auth-provider";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { clearError, registerUser } from "@/store/slices/authSlice";
+import { useEffect } from "react";
+import { selectAuth } from "@/store/selectors";
 
 const registerSchema = z
   .object({
@@ -25,21 +29,34 @@ const registerSchema = z
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function RegisterForm() {
-  const { register: registerUser } = useAuth();
+  const dispatch = useAppDispatch();
+  const { isLoading, error, isAuthenticated } = useAppSelector(selectAuth);
   const router = useRouter();
   const { toast } = useToast();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
   });
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/dashboard");
+    }
+  }, [isAuthenticated, router]);
+
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      await registerUser(data.name, data.email, data.password);
+      const response = await dispatch(
+        registerUser({
+          email: data.email,
+          password: data.password,
+          name: data.name,
+        })
+      ).unwrap();
       toast({
         title: "Account created!",
         description: "Welcome to Advanced Todo App.",
@@ -51,6 +68,7 @@ export default function RegisterForm() {
         description: "Please try again with different credentials.",
         variant: "destructive",
       });
+      dispatch(clearError());
     }
   };
 
@@ -114,8 +132,8 @@ export default function RegisterForm() {
         )}
       </div>
 
-      <Button type="submit" className="w-full" disabled={isSubmitting}>
-        {isSubmitting ? (
+      <Button type="submit" className="w-full" disabled={isLoading}>
+        {isLoading ? (
           <>
             <ArrowPathIcon className="mr-2 h-4 w-4 animate-spin" />
             Creating account...

@@ -1,29 +1,29 @@
 "use client";
-
-import type React from "react";
-import { useState } from "react";
-import { useAuth } from "@/components/auth/auth-provider";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { Header } from "@/components/layout/header";
-import { Sidebar } from "@/components/layout/sidebar";
 import { MobileSidebar } from "@/components/layout/mobile-sidebar";
+import { Sidebar } from "@/components/layout/sidebar";
+import { useAppSelector } from "@/store/hooks";
+import { selectAuthLoading, selectIsAuthenticated } from "@/store/selectors";
+import { useRouter } from "next/navigation";
+import type React from "react";
+import { useEffect, useState } from "react";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { user, loading } = useAuth();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const isLoading = useAppSelector(selectAuthLoading);
   const router = useRouter();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!isLoading && !isAuthenticated) {
       router.push("/login");
     }
-  }, [user, loading, router]);
+  }, [isAuthenticated, isLoading, router]);
 
   const toggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
@@ -33,7 +33,7 @@ export default function DashboardLayout({
     setIsMobileSidebarOpen(!isMobileSidebarOpen);
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
@@ -41,7 +41,7 @@ export default function DashboardLayout({
     );
   }
 
-  if (!user) {
+  if (!isAuthenticated) {
     return null; // Will redirect to login
   }
 

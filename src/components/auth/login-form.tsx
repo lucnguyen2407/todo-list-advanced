@@ -3,12 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { selectAuth } from "@/store/selectors";
+import { clearError, loginUser } from "@/store/slices/authSlice";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useAuth } from "./auth-provider";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -18,21 +21,28 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginForm() {
-  const { login } = useAuth();
+  const dispatch = useAppDispatch();
+  const { isLoading, error, isAuthenticated } = useAppSelector(selectAuth);
   const router = useRouter();
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/dashboard");
+    }
+  }, [isAuthenticated, router]);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      await login(data.email, data.password);
+      const response = await dispatch(loginUser(data)).unwrap();
       toast({
         title: "Welcome back!",
         description: "You have been successfully logged in.",
@@ -44,6 +54,7 @@ export default function LoginForm() {
         description: "Please check your credentials and try again.",
         variant: "destructive",
       });
+      dispatch(clearError());
     }
   };
 
@@ -77,8 +88,8 @@ export default function LoginForm() {
         )}
       </div>
 
-      <Button type="submit" className="w-full" disabled={isSubmitting}>
-        {isSubmitting ? (
+      <Button type="submit" className="w-full" disabled={isLoading}>
+        {isLoading ? (
           <>
             <ArrowPathIcon className="mr-2 h-4 w-4 animate-spin" />
             Signing in...

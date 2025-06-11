@@ -19,17 +19,21 @@ import { useAuth } from "@/components/auth/auth-provider";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { selectUser } from "@/store/selectors";
+import { logout } from "@/store/slices/authSlice";
 
 interface HeaderProps {
   onMobileSidebarToggle: () => void;
 }
 
 export function Header({ onMobileSidebarToggle }: HeaderProps) {
-  const { user, logout } = useAuth();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
   const router = useRouter();
 
   const handleLogout = () => {
-    logout();
+    dispatch(logout());
     router.push("/");
   };
 
@@ -80,7 +84,7 @@ export function Header({ onMobileSidebarToggle }: HeaderProps) {
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            {/* <DropdownMenuContent
+            <DropdownMenuContent
               className="min-w-[12rem] max-w-xs right-0"
               align="end"
               side="bottom"
@@ -105,7 +109,7 @@ export function Header({ onMobileSidebarToggle }: HeaderProps) {
                 <ArrowRightOnRectangleIcon className="mr-2 h-4 w-4" />
                 Log out
               </DropdownMenuItem>
-            </DropdownMenuContent> */}
+            </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
