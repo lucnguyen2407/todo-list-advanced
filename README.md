@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Todo List App
+
+A modern Todo List web application built with Next.js, React, Redux Toolkit, redux-persist, and TypeScript.
+
+## Features
+
+- User authentication (login, register, logout) using Redux Toolkit and redux-persist
+- Persistent authentication state with localStorage
+- Form validation with React Hook Form and Zod
+- Responsive UI with dropdown menus and theme toggle
+- Toast notifications for user feedback
+- Modular and scalable folder structure
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/)
+- [React](https://react.dev/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+- [redux-persist](https://github.com/rt2zz/redux-persist)
+- [TypeScript](https://www.typescriptlang.org/)
+- [React Hook Form](https://react-hook-form.com/)
+- [Zod](https://zod.dev/)
+- [Tailwind CSS](https://tailwindcss.com/) (assumed from class names)
+- [Heroicons](https://heroicons.com/)
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/todo-list.git
+cd todo-list/FE
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app will be available at [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Build for production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+  components/
+    auth/
+      login-form.tsx
+      register-form.tsx
+    layout/
+      header.tsx
+      sidebar.tsx
+    ui/
+      button.tsx
+      input.tsx
+      label.tsx
+  store/
+    slices/
+      authSlice.ts
+    index.ts
+    provider.tsx
+  hooks/
+    use-toast.ts
+  app/
+    layout.tsx
+    page.tsx
+public/
+  manifest.json
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Authentication
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Authentication state is managed by Redux Toolkit (`authSlice.ts`).
+- State is persisted in localStorage using redux-persist.
+- Async actions for login and register are handled with `createAsyncThunk`.
+- Logout is handled by a Redux action.
 
-## Deploy on Vercel
+## Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Make sure you have a `public/manifest.json` file to avoid 404 errors in the browser.
+- The authentication logic uses mock data for demonstration. Replace with real API calls as needed.
+- The UI uses Tailwind CSS and Heroicons for styling and icons.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+This project is licensed under the MIT License.
