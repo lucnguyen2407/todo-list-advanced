@@ -33,7 +33,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
   return (
     <div
       className={cn(
-        "relative bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out flex flex-col h-screen",
+        "relative bg-white dark:bg-[#2D2D2D] border-r border-gray-200 dark:border-[rgba(255,255,255,0.1)] transition-all duration-300 ease-in-out flex flex-col h-screen",
         isCollapsed ? "w-16" : "w-64"
       )}>
       {/* Toggle Button */}
@@ -42,7 +42,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
           variant="outline"
           size="icon"
           onClick={onToggle}
-          className="h-6 w-6 rounded-full bg-white dark:bg-gray-800 border shadow-md hover:shadow-lg">
+          className="h-6 w-6 rounded-full bg-white dark:bg-[#2D2D2D] border shadow-md hover:shadow-lg">
           {isCollapsed ? (
             <ChevronRightIcon className="h-3 w-3" />
           ) : (
@@ -78,10 +78,10 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
               <div
                 className={cn(
                   "flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200",
-                  "hover:bg-gray-100 dark:hover:bg-gray-700",
+                  "hover:bg-gray-100 dark:hover:bg-[#1F1F1F]",
                   isActive
-                    ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300"
-                    : "text-gray-700 dark:text-gray-300",
+                    ? "bg-blue-50 dark:bg-[#2EAADB]/20 text-blue-700 dark:text-[#2EAADB]"
+                    : "text-gray-700 dark:text-[#9B9B9B]",
                   isCollapsed && "justify-center px-2"
                 )}>
                 <item.icon
@@ -104,7 +104,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
           </div>
         ) : (
-          <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
+          <div className="text-xs text-gray-500 dark:text-[#9B9B9B] space-y-1">
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
               <span>Online</span>

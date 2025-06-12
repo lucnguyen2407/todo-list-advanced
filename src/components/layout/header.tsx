@@ -38,7 +38,7 @@ export function Header({ onMobileSidebarToggle }: HeaderProps) {
   };
 
   return (
-    <header className="h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center px-4 lg:px-6">
+    <header className="h-16 bg-white dark:bg-[#2D2D2D] border-b border-gray-200 dark:border-[rgba(255,255,255,0.1)] flex items-center px-4 lg:px-6">
       <div className="flex items-center justify-between w-full">
         {/* Left side - Mobile menu + Search */}
         <div className="flex items-center space-x-4">
@@ -56,7 +56,7 @@ export function Header({ onMobileSidebarToggle }: HeaderProps) {
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input
               placeholder="Search tasks, projects..."
-              className="pl-10 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600"
+              className="pl-10 bg-gray-50 dark:bg-[#1F1F1F] border-gray-200 dark:border-[rgba(255,255,255,0.1)]"
             />
           </div>
         </div>
