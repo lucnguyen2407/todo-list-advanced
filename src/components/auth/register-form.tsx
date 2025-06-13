@@ -1,18 +1,17 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "./auth-provider";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { clearError, registerUser } from "@/store/slices/authSlice";
-import { useEffect } from "react";
 import { selectAuth } from "@/store/selectors";
+import { registerUser } from "@/store/slices/authSlice";
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const registerSchema = z
   .object({

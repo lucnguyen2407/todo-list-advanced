@@ -1,3 +1,4 @@
+"use client";
 import LoginForm from "@/components/auth/login-form";
 import {
   Card,
@@ -6,9 +7,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useAppDispatch } from "@/store/hooks";
+import { clearError } from "@/store/slices/authSlice";
 import Link from "next/link";
 
 export default function LoginPage() {
+  const dispatch = useAppDispatch();
   return (
     <Card>
       <CardHeader className="text-center">
@@ -19,7 +23,10 @@ export default function LoginPage() {
         <LoginForm />
         <div className="mt-4 text-center text-sm">
           {"Don't have an account? "}
-          <Link href="/register" className="text-blue-600 hover:underline">
+          <Link
+            href="/register"
+            className="text-blue-600 hover:underline"
+            onClick={() => dispatch(clearError())}>
             Sign up
           </Link>
         </div>
