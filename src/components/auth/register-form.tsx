@@ -50,7 +50,7 @@ export default function RegisterForm() {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      const response = await dispatch(
+      await dispatch(
         registerUser({
           email: data.email,
           password: data.password,
@@ -62,13 +62,8 @@ export default function RegisterForm() {
         description: "Welcome to Advanced Todo App.",
       });
       router.push("/dashboard");
-    } catch (error) {
-      toast({
-        title: "Registration failed",
-        description: "Please try again with different credentials.",
-        variant: "destructive",
-      });
-      dispatch(clearError());
+    } catch {
+      // Error is already handled by Redux and will be displayed in the UI
     }
   };
 
@@ -142,6 +137,7 @@ export default function RegisterForm() {
           "Create Account"
         )}
       </Button>
+      {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
     </form>
   );
 }

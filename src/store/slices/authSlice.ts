@@ -1,3 +1,4 @@
+import { authApi } from "@/api/api";
 import { User } from "@/lib/types";
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 
@@ -22,21 +23,14 @@ export const loginUser = createAsyncThunk(
     "auth/login",
     async ({ email, password }: { email: string; password: string }, thunkAPI) => {
         try {
-            // Simulate API call - replace with real backend call
-            await new Promise((resolve) => setTimeout(resolve, 5000));
-
-            const mockUser: User = {
-                id: "1",
-                name: "John Doe",
-                email,
-                avatar: "/placeholder.svg?height=32&width=32",
+            const response = await authApi.login({ email, password });
+            return {
+                user: response.data.user,
+                token: response.data.token
             };
-
-            const mockToken = "mock-jwt-token";
-
-            return { user: mockUser, token: mockToken };
-        } catch (error) {
-            return thunkAPI.rejectWithValue("Login failed");
+        } catch (error: any) {
+            // Backend returns error in response.data.message
+            return thunkAPI.rejectWithValue(error.response?.data?.message || "Login failed");
         }
     }
 );
@@ -46,23 +40,14 @@ export const registerUser = createAsyncThunk(
     async ({ name, email, password }: { name: string; email: string; password: string }, thunkAPI) => {
         try {
             // Simulate API call - replace with real backend call
-            await new Promise((resolve) => setTimeout(resolve, 1000))
+            const response = await authApi.register({ name, email, password });
 
-            const mockUser: User = {
-                id: "1",
-                name,
-                email,
-                avatar: "/placeholder.svg?height=32&width=32",
-            }
-
-            const mockToken = "mock-jwt-token"
-
-            return { user: mockUser, token: mockToken }
-        } catch (error) {
-            return thunkAPI.rejectWithValue("Registration failed")
+            return { user: response.data.user, token: response.data.token };
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(error.response?.data?.message || "Registration failed");
         }
     },
-)
+);
 
 const authSlice = createSlice({
     name: "auth",
@@ -73,6 +58,7 @@ const authSlice = createSlice({
             state.token = null;
             state.isAuthenticated = false;
             state.error = null;
+            localStorage.removeItem("token"); // Clear token from local storage
         },
         clearError(state) {
             state.error = null;

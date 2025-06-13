@@ -42,19 +42,10 @@ export default function LoginForm() {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const response = await dispatch(loginUser(data)).unwrap();
-      toast({
-        title: "Welcome back!",
-        description: "You have been successfully logged in.",
-      });
+      await dispatch(loginUser(data)).unwrap();
       router.push("/dashboard");
-    } catch (error) {
-      toast({
-        title: "Login failed",
-        description: "Please check your credentials and try again.",
-        variant: "destructive",
-      });
-      dispatch(clearError());
+    } catch {
+      // Error is already handled by Redux and will be displayed in the UI
     }
   };
 
@@ -98,6 +89,7 @@ export default function LoginForm() {
           "Sign In"
         )}
       </Button>
+      {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
     </form>
   );
 }
