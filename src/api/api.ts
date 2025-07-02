@@ -1,4 +1,5 @@
 import axios, { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import { authService } from '@/lib/auth';
 
 // Tạo instance axios với cấu hình mặc định
 const api = axios.create({
@@ -11,8 +12,8 @@ const api = axios.create({
 // Thêm interceptor để xử lý request
 api.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
-        // Lấy token từ localStorage nếu có
-        const token = localStorage.getItem('token');
+        // Lấy token từ auth service
+        const token = authService.getToken();
         if (token && config.headers) {
             config.headers.Authorization = `Bearer ${token}`;
         }

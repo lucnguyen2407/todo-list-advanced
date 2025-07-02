@@ -1,6 +1,7 @@
 import { authApi } from "@/api/api";
 import { User } from "@/lib/types";
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
+import { authService } from "@/lib/auth";
 
 
 interface AuthState {
@@ -58,7 +59,7 @@ const authSlice = createSlice({
             state.token = null;
             state.isAuthenticated = false;
             state.error = null;
-            localStorage.removeItem("token"); // Clear token from local storage
+            authService.removeToken();
         },
         clearError(state) {
             state.error = null;
@@ -81,6 +82,8 @@ const authSlice = createSlice({
                 state.token = action.payload.token;
                 state.isAuthenticated = true;
                 state.error = null;
+                // Lưu token vào localStorage
+                authService.setToken(action.payload.token);
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.isLoading = false;
@@ -88,7 +91,7 @@ const authSlice = createSlice({
                 state.isAuthenticated = false;
             });
 
-        // Handle logout actions
+        // Handle register actions
         builder
             .addCase(registerUser.pending, (state) => {
                 state.isLoading = true;
@@ -100,6 +103,8 @@ const authSlice = createSlice({
                 state.token = action.payload.token;
                 state.isAuthenticated = true;
                 state.error = null;
+                // Lưu token vào localStorage
+                authService.setToken(action.payload.token);
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.isLoading = false;
